@@ -1,0 +1,152 @@
+﻿@page "/bloodlines1"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using RPMS2025_V4.Models
+@using RPMS2025_V4.Data
+
+@using RPMS2025_V4.Repositories
+
+@rendermode InteractiveServer
+
+@inject IBloodlineRepository _service
+
+<PageTitle>Bloodlines1</PageTitle>
+
+<h1>Reference File: BLOODLINES </h1>
+
+<div class="page-size-chooser">
+    Items per page:
+    <select @bind="@pagination.ItemsPerPage">
+        <option>5</option>
+        <option>10</option>
+        <option>15</option>
+        <option>20</option>
+        <option>50</option>
+    </select>
+</div>
+
+<p>
+    <a href="bloodlines/create">Create New</a>
+</p>
+
+<h3>Maintain reference file - Bloodlines v1</h3>
+
+<QuickGrid Items="@filteredBloodlines" Pagination="@pagination">
+    <PropertyColumn Property="@(c => c.Code)" Sortable="true">
+        <ColumnOptions>
+            <div class="search-box">
+                <label for="filterCode">Filter by Code:</label>
+                <input type="search" id="filterCode" autofocus @bind="filterCode" @bind:event="oninput" placeholder="Bloodline Code..." />
+            </div>
+        </ColumnOptions>
+     </PropertyColumn>
+    <PropertyColumn Property="@(c => c.Desc)" Title="Description" Sortable="true" IsDefaultSortColumn="true" InitialSortDirection="SortDirection.Ascending ">
+        <ColumnOptions>
+            <div>
+                <label for="filterDesc">Filter by Description:</label>
+                <input type="search" id="filterDesc" autofocus @bind="filterDesc" @bind:event="oninput" placeholder="Bloodline Description ..." />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+    <PropertyColumn Property="@(c => c.Status)" Title="Status" Sortable="true" >
+        <ColumnOptions>
+            <div class="search-box">
+                <label for="filterStatus">Filter by Status:</label>
+                <input type="search" id="filterStatus" @bind="filterStatus" @bind:event="oninput" placeholder="(A)ctive (I)nactive..." />
+            </div>
+        </ColumnOptions>
+        @*     <ColumnOptions>
+            <div>
+                <label for="filterStatus">Filter by Status:</label>
+                <input type="text" id="filterStatus" @bind="filterStatus" @bind:event="OnFilterChanged" />
+            </div>
+        </ColumnOptions>*@
+    </PropertyColumn>
+    <PropertyColumn Property="@(c => c.System)" Title="System">
+        <ColumnOptions>
+            <div>
+                <type ="checkbox" id="filterStatus" @bind ="filterStatus" @bind:event ="oninput" />"
+            </div>
+        </ColumnOptions>
+        @*        <ColumnOptions>
+            <div>
+                <label for="filterSystem">Filter by System:</label>
+                <input type="checkbox" id="filterSystem" @bind="filterSystem" />
+            </div>
+        </ColumnOptions> *@
+    </PropertyColumn>
+    <PropertyColumn Property="@(c => c.Rating)" Title="Bloodline Rating" Sortable="true" Align="Align.Right">
+        @*       <ColumnOptions>
+            <div>
+                <label for="filterRating">Filter by Bloodline Rating:</label>
+                <input type="number" id="filterRating" @bind="filterRating" />
+            </div>
+        </ColumnOptions>*@
+    </PropertyColumn>
+    <TemplateColumn Context="bloodline">
+        <a href="@($"bloodlines/edit?id={bloodline.ID}")">Edit</a> |
+        <a href="@($"bloodlines/details?id={bloodline.ID}")">Details</a> |
+        <a href="@($"bloodlines/delete?id={bloodline.ID}")">Delete</a>
+    </TemplateColumn>
+
+</QuickGrid>
+
+<Paginator State="@pagination" />
+
+
+@code {
+  
+        PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
+
+        IQueryable<Bloodline>? itemsQueryable;
+        //IQueryable<Bloodline>? filteredBloodlines;
+
+    string filterCode = "";
+    string filterDesc = "";
+    string filterStatus = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _service.Read();
+        //filteredBloodlines = result.AsQueryable();
+        itemsQueryable = result.AsQueryable();
+    }
+
+    //private IEnumerable<Bloodline> filteredBloodlines => bloodlines
+    //  .Where(b => string.IsNullOrEmpty(filterCode) || b.Code.Contains(filterCode, StringComparison.OrdinalIgnoreCase))
+    //  .Where(b => string.IsNullOrEmpty(filterDesc) || b.Desc.Contains(filterDesc, StringComparison.OrdinalIgnoreCase));
+    //   .Where(b => string.IsNullOrEmpty(filterStatus) || b.Status.Contains(filterStatus, StringComparison.OrdinalIgnoreCase));
+    //.Where(b => !filterSystem || b.System == filterSystem)
+    //.Where(b => !filterRating.HasValue || b.Rating == filterRating);
+
+    IQueryable<Bloodline>? filteredBloodlines
+        {
+            get
+            {
+                var result = itemsQueryable;
+                if (result != null && !string.IsNullOrEmpty(filterCode))
+                {
+                    result = result.Where(c => c.Code.Contains(filterCode, StringComparison.CurrentCultureIgnoreCase))
+                    .Where(b => string.IsNullOrEmpty(filterDesc) || b.Desc.Contains(filterDesc, StringComparison.OrdinalIgnoreCase));
+                }
+                if (result != null && !string.IsNullOrEmpty(filterDesc))
+                {
+                    result = result.Where(c => c.Code.Contains(filterDesc, StringComparison.CurrentCultureIgnoreCase))
+                    .Where(b => string.IsNullOrEmpty(filterDesc) || b.Desc.Contains(filterDesc, StringComparison.OrdinalIgnoreCase));
+                }
+                if (result != null && !string.IsNullOrEmpty(filterStatus))
+                {
+                    result = result.Where(c => c.Code.Contains(filterStatus, StringComparison.CurrentCultureIgnoreCase))
+                    .Where(b => string.IsNullOrEmpty(filterStatus) || b.Desc.Contains(filterStatus, StringComparison.OrdinalIgnoreCase));
+                }
+
+            return result;
+            }
+        }
+
+        private IQueryable<Bloodline> GetBloodlines()
+        {
+            // Fetch or create the IQueryable<Bloodline> here
+            return new List<Bloodline>().AsQueryable();
+        }
+    }

@@ -1,0 +1,124 @@
+
+Dim iUserName(24) As Integer
+Dim dLic As Double
+Dim iX As Integer
+Dim sA As String
+
+dLic# = 0
+
+txtUserName.Text = Trim(txtUserName.Text)
+txtLicNo.Text = Trim(txtLicNo.Text)
+
+For iX = 1 To Len(txtUserName.Text)
+    iUserName(iX) = Asc(Mid$(txtUserName.Text, iX, 1))
+    If iX% = 2 Then
+        dLic# = dLic# * 12
+    Else
+        dLic# = dLic# + (iUserName(iX) * iX)
+    End If
+Next iX
+
+sA$ = Mid$(Str(dLic#), 3, 2)
+
+If Val(Mid(Str(dLic#), 3, 2)) > Asc("A") And _
+    Val(Mid(Str(dLic#), 3, 2)) < Asc("Z") Then
+        txtSecIDa.Text = Chr(Val(Mid(Str(dLic#), 3, 2)))
+ElseIf Val(Mid(Str(dLic#), 3, 3)) > Asc("a") And _
+    Val(Mid(Str(dLic#), 3, 3)) < Asc("z") Then
+        txtSecIDa.Text = Chr(Val(Mid(Str(dLic#), 3, 3)))
+ElseIf Val(Mid(Str(dLic#), 3, 2)) < 26 Then _
+        txtSecIDa.Text = Chr(Val(Mid(Str(dLic#), 3, 2)) + 65)
+ElseIf Val(Mid(Str(dLic#), 3, 2)) / 4 < 25 Then _
+        txtSecIDa.Text = Chr(Val((Mid(Str(dLic#), 3, 2)) / 4) + 65)
+Else
+        txtSecIDa.Text = "A"
+End If
+
+dLic# = Int(dLic# * 119.2) + 100000
+
+txtSecId.Text = Str(dLic#)
+
+If txtLicNo.Text = Trim(txtSecId.Text & txtSecIDa) Then
+    txtStatus.Text = "Passed"
+Else
+    txtStatus.Text = "Failed"
+End If
+
+'*********
+create rp.dat
+On Error GoTo Err2:
+Dim LenTestString As Integer
+    Dim A As String
+    Dim Program As Integer
+    Dim FirstPosition As Long
+    Dim Ctr As Integer
+    Dim I As Long
+    Dim C As String
+    Dim J As Integer
+    Dim T As String
+    Dim U As String
+    Dim U1 As String
+    Dim Z As Integer
+    Dim C1 As Integer
+    Dim ByteCnt As Long
+    
+    But3Process.Visible = False
+    CmdAbort.Visible = True
+    MsgPanel.Caption = "Please wait - Searching for spot to place Brand..."
+    Fin% = 0
+    ByteCnt& = 0
+    ByteCnt1& = 0
+    LenTestString% = 32     'Store length of test string
+    Program% = 1            'Use a descriptive name for file number
+    Open "H:\dev_vb\reg\rp.dat" For Binary Access Read Write As #Program%
+    FirstPosition& = 1
+
+    A$ = String$(1, 0)
+    
+                'Encrypt the string
+                MsgPanel.Caption = "Please wait - FOUND spot to place Brand..."
+                T$ = Left$(Text1.Text, 24) 'Text1 contains rego info
+                U$ = ""         'U$ will be the encrypted string
+                U1$ = "" 'U1$ will be encrupted License No.
+                For Z% = 1 To Len(T$)'For the length of the string
+                    C1% = Asc(Mid$(T$, Z%, 1))'Get the ASC code of chr
+                    U$ = U$ + Chr$(C1% Xor &HFF)'Encrypt chr & append
+                Next Z%
+                
+                'Licence Code
+                For Z% = 1 To Len(Text3.Text) 'For the length of the string
+                    C1% = Asc(Mid$(Text3.Text, Z%, 1))'Get the ASC code of chr
+                    U1$ = U1$ + Chr$(C1% Xor &HFF)'Encrypt chr & append
+                Next Z%
+                
+                U$ = U$ & U1$
+                
+                C$ = Left$(U$, 1)   'Get the first char
+                Put #Program%, FirstPosition&, C$   'Output List
+                mReadChar.Text = C$
+                mReadBin.Text = Asc(C$)
+                mRecWritten.Text = FirstPosition&
+                MsgPanel.Caption = "Please wait - BRANDING ....."
+                For J% = 2 To 32 'Write other chars
+                    C$ = Mid$(U$, J%, 1)
+                    If C$ = "" Then 'If out of chars in name
+                        C$ = Chr$(Asc(" ") Xor &HFF)    'encrypt space
+                    End If
+                    Put #Program%, , C$
+                    mReadChar.Text = C$
+                    mReadBin.Text = Asc(C$)
+                    mRecWritten.Text = FirstPosition& + J% - 1
+                Next J%
+                Fin% = -1
+                
+                MsgPanel.Caption = "BRANDED"
+                
+    Close #Program%
+    But3Process.Visible = True
+    CmdAbort.Visible = False
+    Exit Sub
+Err2:
+    MsgBox "Error is " & Err & " " & Error
+    Resume Next
+
+'*******************************

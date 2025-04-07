@@ -1,0 +1,142 @@
+﻿@page "/"
+@inject DapperRepository<Colour2> Colour2Manager
+
+@if (Colour2s != null)
+{
+    <select @onchange="Colour2Selected" size="10" style="width:100%;">
+        @foreach (var colour2 in Colour2s)
+        {
+            if (SelectedColour2 != null && colour2.Code == SelectedColour2.Code)
+            {
+                <option selected value="@colour2.Desc">@colour2.Desc&nbsp;@colour2.Code</option>
+            }
+            else
+            {
+                <option value="@colour2.Code">@colour2.Code&nbsp;@colour2.Desc</option>
+            }
+        }
+    </select>
+    <br />
+    <br />
+
+    @if (CanIAddCarl)
+    {
+        <button @onclick="AddColour2">Add Carl</button>
+        <br />
+        <br />
+    }
+
+    if (SelectedColour2 != null)
+    {
+        <div>
+            Description: @SelectedColour2.Desc
+        </div>
+        <br />
+
+        <button @onclick="DeleteColour2">Delete @SelectedColour2.Code  @SelectedColour2.Desc</button>
+        <br />
+        <br />
+
+        <button @onclick="UpdateColour2">Update @SelectedColour2.Code  @SelectedColour2.Desc</button>
+        <br />
+        <br />
+    }
+
+    <span style="color:red;">@ErrorMessage</span>
+}
+else
+{
+    <span>Loading...</span>
+}
+
+@code
+{
+    List<Colour2> Colour2s { get; set; }
+    Colour2 SelectedColour2;
+    string ErrorMessage = "";
+
+    bool CanIAddCarl
+    {
+        get
+        {
+            var carl = (from x in Colour2s
+                        where x.Code == "BB"
+                        && x.Desc == "Blue Bar"
+                        select x).FirstOrDefault();
+            return (carl == null);
+        }
+    }
+
+    async Task Colour2Selected(ChangeEventArgs args)
+    {
+        var ColourId = Convert.ToInt32(args.Value.ToString());
+        SelectedColour2= (from x in Colour2s where x.ColourId == ColourId select x).FirstOrDefault();
+        var dbCust = (await Colour2Manager.GetAsync($"select * from Colour2 where Colourid = {ColourId}")).FirstOrDefault();
+    }
+
+    async Task UpdateColour2()
+    {
+        ErrorMessage = "";
+        SelectedColour2.Desc = $"Updated at {DateTime.Now.ToString()}";
+        var updated = await Colour2Manager.UpdateAsync(SelectedColour2);
+        if (updated == null)
+        {
+            ErrorMessage = "Could not update Colour2";
+        }
+    }
+
+    async Task AddColour2()
+    {
+        ErrorMessage = "";
+        var Colour2 = new Colour2()
+        {
+            Code = "NC",
+                Desc = "New Colour2",
+                 System = false
+          //       CreatedDt = DateTime,
+            //     UpdatedDt=Datetime
+        };
+        var newColour2 = await Colour2Manager.InsertAsync(Colour2);
+        if (newColour2 != null)
+            await LoadAllColour2s();
+        else
+            ErrorMessage = "Could not insert Colour2";
+    }
+
+    async Task DeleteColour2()
+    {
+        ErrorMessage = "";
+        var success = await Colour2Manager.DeleteAsync(SelectedColour2);
+        if (success)
+        {
+            SelectedColour2 = null;
+            await LoadAllColour2s();
+        }
+        else
+        {
+            ErrorMessage = "Colour2 could not be deleted";
+        }
+    }
+
+    async Task LoadAllColour2s()
+    {
+        await Task.Delay(0);
+
+        // Get all Colours
+        //var result = await ColourManager.GetAll();
+
+        // Get Colours that start with B
+        //var result = await ColourManager.GetAsync("select * from Colour where lastname like 'b%' order by lastname");
+
+        // Get Colours Sorted by Last Name
+        var result = await Colour2Manager.GetAsync("select * from Colour2 order by code");
+
+        Colour2s = result.ToList();
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllColour2s();
+    }
+}

@@ -1,0 +1,50 @@
+'CREATE TABLE
+Public Function CreateTable(ByVal DatabaseName As String, _
+   ByVal TableName As String) As Boolean
+
+'DataBaseName is the file/path name of the database
+'TableName is the name of the table you want to create
+'Returns true if successful, false otherwise
+'Project must include reference to DAO
+
+On Error GoTo errorhandler
+Dim oDB As DAO.Database
+Dim td As DAO.TableDef
+Dim f As DAO.Field
+
+Set oDB = Workspaces(0).OpenDatabase(DatabaseName)
+On Error GoTo errorhandler
+If TableExists(oDB, TableName) Then GoTo errorhandler
+'Create table object
+Set td = oDB.CreateTableDef(TableName)
+
+'Must add a field
+'This adds an auto-incremented ID field
+
+Set f = td.CreateField("ID", dbLong)
+f.Attributes = dbAutoIncrField
+
+'Append field to table
+td.Fields.Append f
+
+'Append Table to Database
+oDB.TableDefs.Append td
+
+oDB.Close
+CreateTable = True
+Exit Function
+errorhandler:
+If Not oDB Is Nothing Then oDB.Close
+Set td = Nothing
+Set f = Nothing
+
+End Function
+Public Function TableExists(oDB As Database, TableName As String) As Boolean
+    
+    Dim td As DAO.TableDef
+    On Error Resume Next
+
+    Set td = oDB.TableDefs(TableName)
+    TableExists = Err.Number = 0
+End Function
+

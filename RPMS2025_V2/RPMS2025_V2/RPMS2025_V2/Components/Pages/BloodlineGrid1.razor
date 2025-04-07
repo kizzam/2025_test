@@ -1,0 +1,38 @@
+﻿@page "/BloodlineGrid1"
+
+@using Syncfusion.Blazor.Core
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using RPMS2025_V2.Models
+@using RPMS2025_V2.Data
+@using System.Collections.Generic
+
+
+<h3>BloodlineGrid1</h3>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Desc</th>
+        <th>Status</th>
+    </tr>
+
+    @if (BloodlineData != null)
+    {
+        @foreach (var item in BloodlineData)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.Code</td>
+                <td>@item.Desc</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+   
+    }
+}

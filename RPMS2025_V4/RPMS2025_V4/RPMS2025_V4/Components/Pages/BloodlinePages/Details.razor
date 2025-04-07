@@ -1,0 +1,66 @@
+﻿@page "/bloodlines/details"
+@using Microsoft.EntityFrameworkCore
+@using RPMS2025_V4.Models
+@* @inject IDbContextFactory<RPMS2025_V4.Data.RPMSdBContext> DbFactory *@
+@using RPMS2025_V4.Repositories
+@inject IBloodlineRepository _service
+@inject NavigationManager NavigationManager
+
+<PageTitle>Bloodline Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Bloodline</h2>
+    <hr />
+    @if (bloodline is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Code</dt>
+            <dd class="col-sm-10">@bloodline.Code</dd>
+            <dt class="col-sm-2">Desc</dt>
+            <dd class="col-sm-10">@bloodline.Desc</dd>
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-10">@bloodline.Status</dd>
+            <dt class="col-sm-2">System</dt>
+            <dd class="col-sm-10">@bloodline.System</dd>
+            <dt class="col-sm-2">Rating</dt>
+            <dd class="col-sm-10">@bloodline.Rating</dd>
+            @*
+            <dt class="col-sm-2">RatingBreeding</dt>
+            <dd class="col-sm-10">@bloodline.RatingBreeding</dd>
+            <dt class="col-sm-2">RatingPerf</dt>
+            <dd class="col-sm-10">@bloodline.RatingPerf</dd>
+            <dt class="col-sm-2">RatingCustom</dt>
+            <dd class="col-sm-10">@bloodline.RatingCustom</dd>
+            *@
+        </dl>
+        <div>
+            <a href="@($"/bloodlines/edit?id={bloodline.ID}")">Edit</a> |
+            <a href="@($"/bloodlines")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Bloodline? bloodline;
+
+    [SupplyParameterFromQuery]
+    private int ID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //using var context = DbFactory.CreateDbContext();
+        //bloodline = await context.Bloodline.FirstOrDefaultAsync(m => m.ID == ID);
+
+        bloodline = await _service.Read(ID);
+
+        if (bloodline is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

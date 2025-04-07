@@ -1,0 +1,37 @@
+﻿@page "/"
+
+@inject IViewPigeonsByRingNoUseCase ViewPigeonsByRingNoUseCase
+
+<PageTitle>Test Page</PageTitle>
+
+<br />
+
+<ul>
+    @foreach(var inv in _Pigeons)
+
+    {
+    <li>
+        @inv.PigeonId, @inv.colour, @inv.ringno
+    </li>
+    }
+</ul>
+
+@code
+{
+    private List<Pigeon> _Pigeons = new List<Pigeon>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _Pigeons = (await ViewPigeonsByRingNoUseCase.ExecuteAsync()).ToList();
+//        _Pigeons = (await ViewPigeonsByRingNoUseCase.ExecuteAsync("2022/NRC/850")).ToList();
+//        _Pigeons = (await ViewPigeonsByRingNoUseCase.ExecuteAsync("2029/NRC/850")).ToList();
+
+        
+        //1:17:32
+
+    }
+
+
+
+
+}

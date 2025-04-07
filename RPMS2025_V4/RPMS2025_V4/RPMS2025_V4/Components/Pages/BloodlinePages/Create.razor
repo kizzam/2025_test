@@ -1,0 +1,85 @@
+﻿@page "/bloodlines/create"
+@using Microsoft.EntityFrameworkCore
+@using RPMS2025_V4.Models
+@* @inject IDbContextFactory<RPMS2025_V4.Data.RPMSdBContext> DbFactory *@
+@using RPMS2025_V4.Repositories
+@inject IBloodlineRepository _service
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create Bloodline</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Bloodline</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Bloodline" OnValidSubmit="AddBloodline" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="code" class="form-label">Code:</label> 
+                <InputText id="code" @bind-Value="Bloodline.Code" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.Code" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="desc" class="form-label">Description:</label> 
+                <InputText id="desc" @bind-Value="Bloodline.Desc" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.Desc" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="status" class="form-label">Status:</label> 
+                <InputText id="status" @bind-Value="Bloodline.Status" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.Status" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="system" class="form-label">System:</label> 
+                <InputCheckbox id="system" @bind-Value="Bloodline.System" class="form-check-input" /> 
+                <ValidationMessage For="() => Bloodline.System" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating:</label> 
+                <InputNumber id="rating" @bind-Value="Bloodline.Rating" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.Rating" class="text-danger" /> 
+            </div>
+            @*       
+            <div class="mb-3">
+                <label for="ratingbreeding" class="form-label">RatingBreeding:</label> 
+                <InputNumber id="ratingbreeding" @bind-Value="Bloodline.RatingBreeding" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.RatingBreeding" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="ratingperf" class="form-label">RatingPerf:</label> 
+                <InputNumber id="ratingperf" @bind-Value="Bloodline.RatingPerf" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.RatingPerf" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="ratingcustom" class="form-label">RatingCustom:</label> 
+                <InputNumber id="ratingcustom" @bind-Value="Bloodline.RatingCustom" class="form-control" /> 
+                <ValidationMessage For="() => Bloodline.RatingCustom" class="text-danger" /> 
+            </div>
+            *@        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/bloodlines">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Bloodline Bloodline { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddBloodline()
+    {
+        //using var context = DbFactory.CreateDbContext();
+        //context.Bloodline.Add(Bloodline);
+
+        await _service.Create(Bloodline);
+        
+        NavigationManager.NavigateTo("/bloodlines");
+    }
+}

@@ -1,0 +1,44 @@
+﻿@page "/Bloodline"
+
+@using RPMS2025_WEB_2512.Data
+@using RPMS2025_WEB_2512.Services
+@using RPMS2025_WEB_2512.Models
+
+<h3>Call BloodLine SP</h3>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Desc</th>
+        <th>Status</th>
+    </tr>
+
+    @if (BloodlineDetails != null)
+    {
+        @foreach (var item in BloodlineDetails)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.Code</td>
+                <td>@item.Desc</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    private BloodlineModel[] BloodlineDetails;
+
+    // Inject the Bloodlineservices
+    [Inject]
+
+    private BloodlineServices BloodlineServices { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BloodlineDetails = await BloodlineServices.GetbloodlinedetailsAsync();
+    }
+}
+

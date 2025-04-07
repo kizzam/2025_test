@@ -1,0 +1,31 @@
+﻿@inject IViewPigeonsByRingNoUseCase ViewPigeonsByRingNoUseCase
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>PigeonId</th>
+            <th>ringno</th>
+            <th>colour</th>
+            <th>Sire_Id</th>
+            <th>Dam_Id</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <PigeonListItemComponent Pigeons="listPigeons"></PigeonListItemComponent>
+    </tbody>
+</table>
+
+@code
+{
+    private List<Pigeon> listPigeons = new List<Pigeon>();
+
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        listPigeons = (await ViewPigeonsByRingNoUseCase.ExecuteAsync(this.SearchTerm)).ToList();
+    }
+
+}

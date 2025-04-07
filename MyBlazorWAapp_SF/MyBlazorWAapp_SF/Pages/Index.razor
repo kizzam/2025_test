@@ -1,0 +1,31 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<SfCalendar TValue="DateTime?"></SfCalendar>
+
+<SfGrid DataSource="@BirdData"></SfGrid>
+
+@code{
+    public class Bird
+    {
+        public int Year { get; set; }
+        public string Mark { get; set; } = null!;
+        public string RingNo { get; set; } = null!;
+
+    }
+
+    public List<Bird> BirdData = new List<Bird>
+    {
+     new Bird { Year = 2021,Mark = "QPF", RingNo = "90987"},
+     new Bird { Year = 2021,Mark = "NRC", RingNo = "00999"},
+     new Bird { Year = 2021,Mark = "DDRPA", RingNo = "1232"},
+    };
+    
+}

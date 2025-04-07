@@ -1,0 +1,29 @@
+﻿@page "/fetchdata"
+@inject DapperRepository<Customers> CustomersManager
+
+<h4>Step through the code to observe the CRUD actions</h4>
+
+<button class="btn btn-primary" @onclick="Test">Click me</button>
+
+@code {
+
+    async Task Test()
+    {
+        // get all
+        var customers = await CustomersManager.GetAllAsync();
+
+        // add new
+        var customer = new Customers()
+            {
+                CustomerID = "ABCD",
+                CompanyName = DateTime.Now.ToString()
+            };
+
+        var added = await CustomersManager.InsertAsync(customer);
+
+        added.CompanyName = $"Updated at {DateTime.Now.ToString()}";
+       await CustomersManager.UpdateAsync(added);
+
+       await CustomersManager.DeleteAsync(added);
+    }
+}

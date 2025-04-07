@@ -1,0 +1,53 @@
+﻿@page "/BloodLineGrid3"
+
+@using RPMS2025_WEB_2512.Data
+@using RPMS2025_WEB_2512.Services
+@using RPMS2025_WEB_2512.Models
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using System.Collections.Generic
+@using System.Threading.Tasks
+@using System.Data.SqlClient
+@using Syncfusion.Blazor.Core
+
+
+@rendermode InteractiveServer
+
+<h3>BloodlineGrid3</h3>
+
+<SfGrid TValue="bloodline">
+    <SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptor.CustomAdaptor"></SfDataManager>
+    <GridColumns>
+        <GridColumn Field=@nameof(Bloodline.ID)
+        TextAlign="TextAlign.Center" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Bloodline.Code)
+        TextAlign="TextAlign.Center" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Bloodline.Desc)
+        TextAlign="TextAlign.Center" Width="180"></GridColumn>
+        <GridColumn Field=@nameof(Bloodline.Status)
+        TextAlign="TextAlign.Center" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+
+@code {
+    public class CustomAdaptor : Syncfusion.Blazor.DataAdaptor
+    {
+        public Bloodline bloodlineService1 = new bloodline();
+
+        
+        public override async Task<Object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
+        {
+            IEnumerable<BloodlineModel> dataSource = await bloodlineService1.GetBloodlineAsync();
+            int totalRecordsCount = dataSource e.Cast<Bloodline>().Count();
+            return dataManagerRequest.RequiresCounts ? new DataResult()
+            {
+                Result = dataSource,
+                Count = totalRecordsCount
+            } : (object)dataSource;
+        }
+    }   
+
+}

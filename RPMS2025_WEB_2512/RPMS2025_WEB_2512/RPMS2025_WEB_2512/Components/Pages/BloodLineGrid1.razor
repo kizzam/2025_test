@@ -1,0 +1,26 @@
+﻿@page "/BloodlineGrid1"
+
+@using RPMS2025_WEB_2512.Data
+@using RPMS2025_WEB_2512.Services
+@using Microsoft.EntityFrameworkCore
+@using Syncfusion.Blazor
+
+
+<h3>Blazor Syncfusion Grid1</h3>
+
+<SfGrid DataSource="Bloodlinedetails">
+</SfGrid>
+
+@code
+{
+    private BloodlineClass[] BloodlineDetails;
+
+    // Inject the Bloodlineservices
+    [Inject]
+    private Bloodlineservices Bloodlineservices { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BloodlineDetails = await Bloodlineservices.GetbloodlinedetailsAsync();
+    }
+}

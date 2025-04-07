@@ -1,0 +1,56 @@
+﻿@page "/toasts"
+@using BlazorWebToasts.Services
+@using BlazorWebToasts.Components
+@inject ToastService toastService
+@rendermode InteractiveServer
+
+
+<PageTitle>Home</PageTitle>
+
+<button class="btn btn-info" @onclick="@(() => toastService.ShowToast("I'm an INFO message", ToastLevel.Info))">Info Toast</button>
+<button class="btn btn-success" @onclick="@(() => toastService.ShowToast("I'm a SUCCESS message", ToastLevel.Success))">Success Toast</button>
+<button class="btn btn-warning" @onclick="@(() => toastService.ShowToast("I'm a WARNING message", ToastLevel.Warning))">Warning Toast</button>
+<button class="btn btn-danger" @onclick="@(() => toastService.ShowToast("I'm an ERROR message", ToastLevel.Error))">Error Toast</button>
+
+
+<div id="toast-container">
+    @if (isVisible)
+    {
+        <div class="toast @toastLevel">
+            @message
+        </div>
+    }
+</div>
+
+
+@code {
+    private bool isVisible;
+    private string message="test";
+    private string toastLevel="Warning";
+
+    protected override void OnInitialized()
+    {
+        toastService.OnShow += ShowToast;
+        toastService.OnHide += HideToast;
+    }
+
+    private void ShowToast(string message, ToastLevel level)
+    {
+        this.message = message;
+        this.toastLevel = level.ToString().ToLower();
+        isVisible = true;
+        StateHasChanged();
+    }
+
+    private async void HideToast()
+    {
+        isVisible = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        toastService.OnShow -= ShowToast;
+        toastService.OnHide -= HideToast;
+    }
+}

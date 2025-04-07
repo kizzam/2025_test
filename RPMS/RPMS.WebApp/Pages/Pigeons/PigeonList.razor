@@ -1,0 +1,35 @@
+﻿@page "/PigeonList"
+
+@inject NavigationManager NavigationManager
+<h3>Pigeon List</h3>
+<br />
+<SearchPigeonComponent
+    OnSearchPigeon="OnPigeonSearch"></SearchPigeonComponent>
+<br/>
+<PigeonListComponent SearchTerm="@searchTerm"></PigeonListComponent>
+
+<br/>
+<button
+    type="button"
+    class="btn btn-primary"
+    @onclick="AddPigeon">Add Pigeon</button>
+Search Term: @searchTerm
+
+@code {
+ 
+    private string searchTerm = string.Empty;
+
+    private void OnPigeonSearch(string searchTerm)
+
+    {
+    
+        this.searchTerm = searchTerm;
+
+    }
+
+    private void AddPigeon()
+    {
+        NavigationManager.NavigateTo("/addpigeon");
+
+    }
+}

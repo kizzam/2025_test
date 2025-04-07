@@ -1,0 +1,115 @@
+﻿@page "/bloodlines/delete"
+@using Microsoft.EntityFrameworkCore
+@using RPMS2025_V4.Models
+@* @inject IDbContextFactory<RPMS2025_V4.Data.RPMSdBContext> DbFactory *@
+@using RPMS2025_V4.Repositories
+@inject IBloodlineRepository _service
+@inject NavigationManager NavigationManager
+
+<PageTitle>Delete Bloodline</PageTitle>
+
+<h1>Delete</h1>
+
+<p>Are you sure you want to DELETE this Bloodline?</p>
+<div>
+    <h2>Bloodline</h2>
+    <hr />
+    @if (bloodline is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Code</dt>
+            <dd class="col-sm-10">@bloodline.Code</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Desc</dt>
+            <dd class="col-sm-10">@bloodline.Desc</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-10">@bloodline.Status</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">System</dt>
+            <dd class="col-sm-10">@bloodline.System</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Rating</dt>
+            <dd class="col-sm-10">@bloodline.Rating</dd>
+        </dl>
+        @*
+        <dl class="row">
+            <dt class="col-sm-2">RatingBreeding</dt>
+            <dd class="col-sm-10">@bloodline.RatingBreeding</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">RatingPerf</dt>
+            <dd class="col-sm-10">@bloodline.RatingPerf</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">RatingCustom</dt>
+            <dd class="col-sm-10">@bloodline.RatingCustom</dd>
+        </dl>
+        *@
+
+        <EditForm method="post" Model="bloodline" OnValidSubmit="DeleteBloodline" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(bloodline is null)">Delete</button> |
+            <a href="/bloodlines">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    private Bloodline? bloodline;
+
+    [SupplyParameterFromQuery]
+    private int ID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //using var context = DbFactory.CreateDbContext();
+        //bloodline = await context.Bloodline.FirstOrDefaultAsync(m => m.ID == ID);
+
+        bloodline = await _service.Read(ID);
+
+        if (bloodline is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+        else
+        {
+            if (bloodline.System == true)
+            {
+                NavigationManager.NavigateTo("Cannot Delete as a System Value");
+            }
+            
+            
+            //Will need to chewck if any birds have the bloodline - if so, then do not delete
+            //select * from master mst where mst.ID_bloodline = bloodline.ID
+            //if (master is null)
+           // {
+                //OK to delete
+           // }
+           // else
+           // {
+                //Cannot delete as birds are using this bloodline
+                // Display a list of Birds using this bloodline
+                //Year/Mark/RingNo [ID],ColourCode,Bloodline,DOB,indSOH
+            //}
+
+        }
+    }
+       
+
+    private async Task DeleteBloodline()
+    {
+        //using var context = DbFactory.CreateDbContext();
+        //context.Bloodline.Remove(bloodline!);
+
+        await _service.Delete(ID);
+
+        NavigationManager.NavigateTo("/bloodlines");
+    }
+}

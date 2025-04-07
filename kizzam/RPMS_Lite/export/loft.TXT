@@ -1,0 +1,2 @@
+"code","name","ownername","owneradd1","owneradd2","ownercity","ownerpc","ownerstate","ownerph","license","lat_deg","lat_min","lat_sec","lng_deg","lng_min","lng_sec","ownermark","bscmonth","OwnerClub","checksum","PhSupport","RaceCode","RSlpp","RSRaceFormType","DBVersion","LastBackup","Copyright","DistanceType","OwnerFed"
+"A02","ACE","Kieran Malone","27","Federation Drive","Highfields","4352","Qld","0412117365","1226559L",27,41,39,151,58,11,"HIGHFIELDS",4,"Highfields Racing Pigeon Club","","",1,28,2,"3.2x","1/01/1980","","M","Toowoomba & District Pigeon Federation"

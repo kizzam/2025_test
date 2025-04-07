@@ -1,0 +1,58 @@
+Upgrade
+RPMS software from V3.2 to V3.2x
+
+Step 1
+Backup your RPMS software (refer manual) *recommend new backup disk. After backup check disk to ensure it has a file similar to "RPymmdd" e.g., "RP01001".
+Step 2
+After you are happy backup completed - Double Click on "My Computer"
+Step 3
+Place RPMS Upgrade Floppy disk in drive
+Step 4
+Double Click Drive A: (Files will be displayed).
+Step 5
+In the A:\ window - Double click "Upgrade"
+Step 6
+Upgrade Program starts - Click on "Upgrade to V3.2x"
+Step 4
+Click on UNZIP (Observe files being copied).
+Step 5
+Double Click on A:\
+Step 6
+Double click on "Upgrade" - This will update your database to latest editions.
+Step 7
+Start RPMS software as normal
+Step 8
+Goto File then Owner, type in your full Federation name (note: this is because the upgrade has cleared this field).
+Step 7
+Check to ensure all is working fine, observe the new reports in the "Reports" module. This upgrade includes additional features requested by users and changes as detailed below.
+Step 8
+Give yourself a pat on the back for a job well done!
+
+
+
+
+
+
+
+
+
+Upgrade
+New Reports
+* Report of current birds by Pen/cage
+* Report of user selectable birds with Notes
+* New Team report in Landscape ideal for Breeder Plate bird listing.
+New Race sheet styles
+Now 10, specifically QPF & Tasmania
+Report enhancements
+Miscellaneous enhancements to majority of reports, larger fonts etc.
+Results report
+Will sort in order as requested for screen sort.
+Bug Fixes
+When owner details changed didn't use until program exited then started again - FIXED.
+
+When race point added it was not available to use until exit program and start again - FIXED.
+
+Sort order for ring nos relied on the entry of leading zeros. Now does standard numeric sort then alpha sort - FIXED
+
+Ref:Upgrade32x.doc
+

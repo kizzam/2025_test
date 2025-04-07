@@ -1,0 +1,39 @@
+﻿@page "/BloodlineGrid"
+
+@using RPMS2025_WEB_2512.Data
+@using RPMS2025_WEB_2512.Services
+@using Microsoft.EntityFrameworkCore
+@using Syncfusion.Blazor
+
+<h3>Blazor Syncfusion Grid</h3>
+
+<SfGrid
+    DataSource="Bloodlinedetails1">
+</SfGrid>
+
+@code
+{
+    public List<Bloodline1>? Bloodlinedetails1 { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Bloodlinedetails1=Enumerable.Range(1,10).Select(x => new Bloodline1()
+        {
+           ID = 1000 + x,
+           Code = (new string[] { "ALF", "ABC", "DEF", "FFF", "nnn" })[new Random().Next(5)],
+           //[new Random().Next(5)],
+                Desc = (new string[] { "Alfa", "Jansen", "Test", "Test1", "Test2" })[new Random().Next(5)],
+                Status = (new string[] { "A", "B", "C", "D","E" })[new Random().Next(5)],
+        }).ToList();
+
+    }
+    
+    public class Bloodline1
+    {
+        public int? ID { get; set; }
+        public required string Code { get; set; }
+        public string? Desc { get; set; }
+        public string? Status { get; set; }
+
+    }
+}

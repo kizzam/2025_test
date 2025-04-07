@@ -1,0 +1,45 @@
+﻿@page "/BloodLineGrid2"
+@using RPMS2025_WEB_2512.Data
+@using RPMS2025_WEB_2512.Services
+@using RPMS2025_WEB_2512.Models
+@rendermode InteractiveServer
+
+<h3>SQL Server Data to Blazor</h3>
+
+<SfGrid DataSource="@Bloodlines" AllowPaging="true">
+    <GridColumns>
+        <GridColumn Field=@nameof(Bloodlines.ID)
+        TextAlign ="TextAlign.Center" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Bloodlines.Code)
+        TextAlign="TextAlign.Center" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Bloodlines.Desc)
+        TextAlign="TextAlign.Center" Width="180"></GridColumn>
+        <GridColumn Field=@nameof(Bloodlines.Status)
+        TextAlign="TextAlign.Center" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code {
+    private List<BloodlineModel> Bloodlines;
+    
+    [Inject]
+    private BloodlineServices_New BloodlineService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Bloodlines = await BloodlineService.GetBloodlinesAsync();
+    }
+}
+
+//
+//    private List Bloodline> Bloodlines;
+    // Inject the BloodlineServices_New
+ //   [Inject]
+//    private BloodlineServices_New BloodlineService { get; set; }
+ //   private BloodlineServices_New BloodlineServices { get; set; }
+
+//    protected override async Task OnInitializedAsync()
+ //   {
+ //       Bloodlines = await BloodlineServices.GetBloodlinesAsync();
+ //   }
+//}

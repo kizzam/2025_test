@@ -1,0 +1,69 @@
+﻿@page "/addpigeon"
+
+@inject IAddPigeonUseCase AddPigeonUseCase
+@inject NavigationManager NavigateManager
+
+<h3>Add Pigeon</h3>
+
+<br/>
+
+<EditForm Model="pigeon" OnValidSubmit="SavePigeon">
+
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="form-group">
+        <label for="ringno">Pigeon RingNo</label>
+        <InputText
+            id="ringno"
+            @bind-Value="pigeon.ringno"
+            class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="colour">Pigeon Colour</label>
+        <InputText id="colour"
+                   @bind-Value="pigeon.colour"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="Sire_id">Pigeon Sire_id</label>
+        <InputText id="Sire_id"
+                   @bind-Value="pigeon.Sire_id"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="colour">Pigeon Dam_id</label>
+        <InputText id="Dam_id"
+                   @bind-Value="pigeon.Dam_id"
+                   class="form-control">
+        </InputText>
+    </div>
+    <br/>
+
+    <button type="submit" class="btn btn-primary">Save </button>
+    <button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
+
+</EditForm>
+
+
+@code
+{
+    private Pigeon pigeon = new Pigeon();
+
+    private async Task SavePigeon()
+    {
+        await AddPigeonUseCase.ExecuteAsync(pigeon);
+        NavigateManager.NavigateTo("/PigeonList");
+    }
+
+    private void Cancel()
+    {
+        NavigateManager.NavigateTo("/PigeonList");
+    }
+}

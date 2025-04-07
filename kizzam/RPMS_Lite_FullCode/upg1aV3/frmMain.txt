@@ -1,0 +1,99 @@
+
+Private Sub cmdCheck_Click()
+    Dim db As Database
+    Dim td As TableDef
+    Dim Fld As Field
+    Dim FldName As String
+    Dim x As Integer
+    AppName = "Upgrade V3.2 to V3.2z"
+    Screen.MousePointer = 11
+        
+    'Update Table LOFT
+    Set db = DBEngine.Workspaces(0).OpenDatabase(DBFullFileName$)
+    Set td = db.TableDefs("Loft")
+    FldName$ = "ownerfed"
+    For x = 1 To 3
+        ' Delete the newly added fields.
+        FldName$ = "OwnerFed"
+        FldName$ = InputBox("Field", "Input field", 1)
+
+        If FieldExists(td, FldName$) Then
+            'MsgBox "Field Exists"
+            'AppendDeleteField Td, "DELETE", FldName$
+            'AppendDeleteField Td, "APPEND", FldName$, dbText, 39
+        Else
+            'MsgBox "Field Doesn't Exists"
+            'AppendDeleteField Td, "APPEND", FldName$, dbText, 39
+        End If
+        Label1.Caption = "Upgrade Completed"
+        cmdUpgrade.Enabled = False
+        Screen.MousePointer = 0
+    Next x
+End Sub
+Private Sub cmdExit_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdFixRTrans_Click()
+    Fix_relDate
+End Sub
+
+Private Sub cmdUpgrade_Click()
+    Dim db As Database
+    Dim td As TableDef
+    Dim Fld As Field
+    Dim FldName As String
+    Dim x As Integer
+    Dim FldValue As String
+    Dim CmdLine As String
+    Dim result As Integer
+        
+    cmdUpgrade.Enabled = False
+    
+    result = MsgBox("Have you completed two(2) separate backups on separate diskettes?", vbYesNo, "MUST do BACKUP prior to this operation!")
+    If result <> 6 Then
+        Label2.Caption = "Upgrade ABORTED - MUST do backup first"
+        MsgBox "See Manual re Backing up RPMS, after backup complete you can attempt upgrade!", vbCritical, "BACKUP MUST BE RUN PRIOR THIS UPGRADE"
+        Exit Sub
+    End If
+    
+    Screen.MousePointer = 11
+    
+    Label2.Caption = "PHASE 1 Copying Files - Please Wait..."
+    frmCopy.Show 1
+    
+    Label2.Caption = "PHASE 2 Modifying Database - Please Wait..."
+    frmDBupg.Show 1
+    DoEvents
+    
+    Label2.Caption = "PHASE 3 Creating Batch file - Please Wait..."
+    CreateFile2
+    
+    Label2.Caption = "PHASE 4 - Install upgraded files" & Chr(10)
+    RetVal = Shell(DestPath$ & "upg.bat", 1)
+    AppActivate (RetVal)
+    
+    Label2.Caption = "INSTALLATION COMPLETED" & Chr(10)
+    Screen.MousePointer = 0
+
+Exit Sub
+
+ErrorSetup:
+    MsgBox AppName + " is not properly installed.  Please re-run setup at a later time to install the " & AppName & " properly.", 48, dialogCaption$
+    ChDrive Mid$(WinSysDir$, 1, 2) ' Set back to hard disk
+    ChDir Right$(WinSysDir$, Len(WinSysDir$) - 2)
+    End
+    Exit Sub
+End Sub
+
+Private Sub Label4_Click()
+Frame1.Visible = False
+End Sub
+
+Private Sub mnuExit_Click()
+cmdExit_Click
+End Sub
+
+Private Sub mnuhelp_Click()
+Frame1.Visible = True
+End Sub

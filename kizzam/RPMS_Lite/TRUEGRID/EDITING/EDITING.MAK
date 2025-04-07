@@ -1,0 +1,11 @@
+EDITING.FRM
+TGCONST.TXT
+WHERE.BAS
+WINHELP.BAS
+C:\WIN\SYSTEM\TRUEGRID.VBX
+ABOUT.FRM
+ProjWinSize=295,447,190,184
+ProjWinShow=2
+IconForm="Form1"
+Title="Editing and Display Tips"
+ExeName="EDITING.EXE"

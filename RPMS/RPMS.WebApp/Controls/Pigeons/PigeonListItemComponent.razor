@@ -1,0 +1,28 @@
+﻿@inject NavigationManager NavigationManager
+
+@if (Pigeons != null && Pigeons.Count > 0)
+{
+    foreach (var inv in Pigeons)
+    {
+     <tr>
+        <td> @inv.PigeonId </td>
+        <td> @inv.ringno </td>
+        <td> @inv.colour </td>
+        <td> @inv.Sire_id </td>
+        <td> @inv.Dam_id </td>
+        <td> <button
+                type = "button"
+                class="btn btn-light"
+                >Edit</button>
+                </td>
+    </tr>
+    }
+
+    @*          @onclick="@(() => EditInventory(inv.ringno))">Edit</button> *@
+}
+
+@code {
+    [Parameter]
+    public List<Pigeon> Pigeons { get; set; } = new List<Pigeon>();
+  
+}

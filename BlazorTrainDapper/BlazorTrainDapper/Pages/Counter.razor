@@ -1,0 +1,24 @@
+﻿@page "/counter"
+@inject DapperRepository<Instrument1> InstrumentManager
+
+<h4>Step through the code to observe the CRUD actions</h4>
+
+<button class="btn btn-primary" @onclick="Test">Click me</button>
+
+@code {
+
+    async Task Test()
+    {
+        // get all
+        var instruments = await InstrumentManager.GetAllAsync();
+
+        // add new
+        var instrument = new Instrument1() { Name = DateTime.Now.ToString() };
+        var added = await InstrumentManager.InsertAsync(instrument);
+
+        added.Name = $"Updated at {DateTime.Now.ToString()}";
+        await InstrumentManager.UpdateAsync(added);
+
+        //await InstrumentManager.DeleteAsync(added);
+    }
+}

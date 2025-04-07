@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPMS2025_V4", "RPMS2025_V4\RPMS2025_V4\RPMS2025_V4.csproj", "{A7A320A6-7228-4C52-A47D-5C049FD88C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPMS2025_V4.Client", "RPMS2025_V4\RPMS2025_V4.Client\RPMS2025_V4.Client.csproj", "{0A3CC638-EEDC-439E-9E08-87C77F843B22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7A320A6-7228-4C52-A47D-5C049FD88C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A320A6-7228-4C52-A47D-5C049FD88C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7A320A6-7228-4C52-A47D-5C049FD88C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7A320A6-7228-4C52-A47D-5C049FD88C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A3CC638-EEDC-439E-9E08-87C77F843B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3CC638-EEDC-439E-9E08-87C77F843B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A3CC638-EEDC-439E-9E08-87C77F843B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3CC638-EEDC-439E-9E08-87C77F843B22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

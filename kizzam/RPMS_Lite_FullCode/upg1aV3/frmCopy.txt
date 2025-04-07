@@ -1,0 +1,12 @@
+Private Sub Form_Load()
+    Timer1.Interval = 20000  ' Set Timer interval.
+    Screen.MousePointer = 11
+    FileCopy SourcePath$ & "\rpms.32z ", DestPath$ & "rpms.exe"
+    DoEvents
+End Sub
+
+Private Sub Timer1_Timer()
+    'If Timer.Interval > 20000 Then
+        Unload Me
+    'End If
+End Sub

@@ -1,0 +1,11 @@
+13/6/99
+Distance	racetrans	Number	Double
+
+11/01/2000
+LastBackup	Loft	Date
+Copyright	Loft	text	32
+
+DB Version
+DBVersion = 3.9a
+
+DB - Date 9/4/2001

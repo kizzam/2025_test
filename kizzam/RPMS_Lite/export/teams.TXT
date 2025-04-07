@@ -1,0 +1,8 @@
+"code","description","status"
+"13EPP","2013 Eppis Classic + HTW","0"
+"13HWC","2013 HTW Classic Only","0"
+"13MDP","2013 MDPR","0"
+"2013B","TDPF Breeders Plate 2013","0"
+"2013G","Gold Coast 50000 2013","0"
+"2013Q","Qld 10000 2013","0"
+"2013T","Tmba Breeders Plate 2013","0"
